@@ -31,9 +31,26 @@ const shops = [
 ];
 
 export async function GET() {
-  const response = NextResponse.json(shops);
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET');
-  response.headers.set('Access-Control-Allow-Headers', '*');
-  return response;
+  return new NextResponse(JSON.stringify(shops), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://b1g1testtask-gmf34ruhp-dmytroborbotko-pets-projects.vercel.app',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': 'https://b1g1testtask-gmf34ruhp-dmytroborbotko-pets-projects.vercel.app',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
 }
