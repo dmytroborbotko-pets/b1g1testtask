@@ -31,5 +31,12 @@ const shops = [
 ];
 
 export async function GET() {
-  return NextResponse.json(shops);
-} 
+  return NextResponse.json(shops, {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
+  });
+}
