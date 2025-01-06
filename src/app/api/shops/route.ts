@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-static";
-export const revalidate = 3600; // revalidate every hour
+export const dynamic = 'force-static';
 
 const shops = [
   {
@@ -30,17 +29,22 @@ const shops = [
   },
 ];
 
-export async function GET(request: Request) {
-  const origin = request.headers.get('origin');
-  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8000', 'http://localhost'];
-  
+export async function GET() {
   return NextResponse.json(shops, {
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": allowedOrigins.includes(origin || '') ? origin! : allowedOrigins[0],
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Credentials": "true",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    },
+  });
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({}, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     },
   });
 }
