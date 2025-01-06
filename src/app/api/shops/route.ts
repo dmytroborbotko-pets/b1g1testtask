@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-static';
-
 const shops = [
   {
     id: 1,
@@ -30,21 +28,9 @@ const shops = [
 ];
 
 export async function GET() {
-  return NextResponse.json(shops, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    },
-  });
-}
-
-export async function OPTIONS() {
-  return NextResponse.json({}, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    },
-  });
+  const response = NextResponse.json(shops);
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET');
+  response.headers.set('Access-Control-Allow-Headers', '*');
+  return response;
 }
