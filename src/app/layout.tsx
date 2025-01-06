@@ -4,9 +4,9 @@ import "./globals.css";
 import { Providers } from "./store/providers";
 
 const redHatDisplay = Red_Hat_Display({
-  subsets: ['latin'],
-  weight: ['600', '700'],
-  variable: '--font-red-hat-display',
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-red-hat-display",
 });
 
 export const metadata: Metadata = {

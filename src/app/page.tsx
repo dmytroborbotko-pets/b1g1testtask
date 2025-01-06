@@ -11,9 +11,14 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-100">
       <header className="bg-[#202020] text-white p-4 rounded-b-2xl">
-        <div className="container mx-auto flex justify-between items-center mb-4" >
-          <h1 className="text-[22px] font-['Red_Hat_Display'] font-[700]">Shop</h1>
-          <button className="text-[16px] font-['Red_Hat_Display'] font-[700] text-white hover:text-gray-300" onClick={() => {}}>
+        <div className="container mx-auto flex justify-between items-center mb-4">
+          <h1 className="text-[22px] font-['Red_Hat_Display'] font-[700]">
+            Shop
+          </h1>
+          <button
+            className="text-[16px] font-['Red_Hat_Display'] font-[700] text-white hover:text-gray-300"
+            onClick={() => {}}
+          >
             Sign in
           </button>
         </div>

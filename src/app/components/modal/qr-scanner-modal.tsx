@@ -24,92 +24,83 @@ export const QRScannerModal = ({
   const [error, setError] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
 
+  const cleanupScanner = () => {
+    BarcodeScanner.removeAllListeners();
+    document.querySelector("body")?.classList.remove("barcode-scanner-active");
+    BarcodeScanner.stopScan();
+  };
+
   useEffect(() => {
     checkPermissions();
-    return () => {
-      // Cleanup when component unmounts
-      BarcodeScanner.removeAllListeners();
-      document.querySelector('body')?.classList.remove('barcode-scanner-active');
-      BarcodeScanner.stopScan();
-    };
+    return cleanupScanner;
   }, []);
 
   const checkPermissions = async () => {
     try {
       const { camera } = await BarcodeScanner.checkPermissions();
-      setHasPermission(camera === 'granted');
+      setHasPermission(camera === "granted");
     } catch (err) {
-      console.error('Error checking permissions:', err);
       setHasPermission(false);
+      setError(
+        "Camera permission is required to scan QR codes: " + JSON.stringify(err)
+      );
+    }
+  };
+
+  const handleScanResult = async (result: {
+    barcode?: { rawValue: string };
+  }) => {
+    cleanupScanner();
+    setIsScanning(false);
+    if (result.barcode) {
+      onScan(result.barcode.rawValue);
+    }
+    onClose();
+  };
+
+  const startScan = async () => {
+    try {
+      const isAvailable = await BarcodeScanner.isSupported();
+      if (!isAvailable) {
+        throw new Error("Barcode scanner is not available on this device");
+      }
+
+      const listener = await BarcodeScanner.addListener(
+        "barcodeScanned",
+        async (result) => {
+          await listener.remove();
+          handleScanResult(result);
+        }
+      );
+
+      document.querySelector("body")?.classList.add("barcode-scanner-active");
+      setIsScanning(true);
+
+      await BarcodeScanner.startScan({
+        formats: [BarcodeFormat.QrCode],
+      });
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error ? error.message : "Failed to scan QR code"
+      );
+      cleanupScanner();
+      setIsScanning(false);
+      onClose();
     }
   };
 
   const requestPermissions = async () => {
     try {
       const { camera } = await BarcodeScanner.requestPermissions();
-      setHasPermission(camera === 'granted');
-      if (camera === 'granted') {
+      setHasPermission(camera === "granted");
+      if (camera === "granted") {
         startScan();
       }
     } catch (err) {
-      console.error('Error requesting permissions:', err);
       setHasPermission(false);
-      setError('Camera permission is required to scan QR codes');
-    }
-  };
-
-  const stopScanning = async () => {
-    try {
-      await BarcodeScanner.stopScan();
-      document.querySelector('body')?.classList.remove('barcode-scanner-active');
-      setIsScanning(false);
-      onClose();
-    } catch (error) {
-      console.error('Error stopping scan:', error);
-    }
-  };
-
-  const startScan = async () => {
-    try {
-      // Check if scanner is available
-      const isAvailable = await BarcodeScanner.isSupported();
-      if (!isAvailable) {
-        throw new Error("Barcode scanner is not available on this device");
-      }
-
-      // Add the barcodeScanned listener
-      const listener = await BarcodeScanner.addListener(
-        'barcodeScanned',
-        async (result) => {
-          // Remove the listener
-          await listener.remove();
-          // Remove the class
-          document.querySelector('body')?.classList.remove('barcode-scanner-active');
-          // Stop scanning
-          await BarcodeScanner.stopScan();
-          setIsScanning(false);
-          // Handle the scanned code
-          if (result.barcode) {
-            onScan(result.barcode.rawValue);
-          }
-          onClose();
-        },
+      setError(
+        "Camera permission is required to scan QR codes: " + JSON.stringify(err)
       );
-
-      // Make the webview transparent
-      document.querySelector('body')?.classList.add('barcode-scanner-active');
-      setIsScanning(true);
-
-      // Start the barcode scanner
-      await BarcodeScanner.startScan({
-        formats: [BarcodeFormat.QrCode],
-      });
-    } catch (error: Error | unknown) {
-      console.error("Scanning failed:", error);
-      setError(error instanceof Error ? error.message : 'Failed to scan QR code');
-      document.querySelector('body')?.classList.remove('barcode-scanner-active');
-      setIsScanning(false);
-      onClose();
     }
   };
 
@@ -122,46 +113,54 @@ export const QRScannerModal = ({
     }
   };
 
-  return (
+  const renderScannerOverlay = () => (
     <>
-      {isScanning ? (
-        <>
-          <div className="back-button" onClick={stopScanning}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 19L8 12L15 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div className="scanner-overlay">
-            <p className="scan-text">Scan a QR Code from your friend app.</p>
-            <div className="scan-frame" />
-          </div>
-        </>
-      ) : (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <div className="text-center barcode-scanner-modal">
-            <div className="bg-[#517226] rounded-full p-2 w-16 h-16 mx-auto mb-10 flex items-center justify-center">
-              <DiscountIcon />
-            </div>
-            <h2 className="text-[20px] font-['Red_Hat_Display'] font-[700] mb-2">
-              Get a 5 CHF.- discount
-            </h2>
-            <p className="text-[16px] font-['Red_Hat_Display'] font-[500] mb-6">
-              Ask your friend to open a QR Code in his account settings. Scan the QR
-              Code and get a discount.
-            </p>
-
-            {error && (
-              <p className="text-red-500 mb-4 text-sm">
-                {error}
-              </p>
-            )}
-
-            <Button onClick={handleScanClick} styles="w-full">
-              {hasPermission ? 'Scan QR' : 'Allow Camera & Scan'}
-            </Button>
-          </div>
-        </Modal>
-      )}
+      <div className="back-button" onClick={cleanupScanner}>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 19L8 12L15 5"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+      <div className="scanner-overlay">
+        <p className="scan-text">Scan a QR Code from your friend app.</p>
+        <div className="scan-frame" />
+      </div>
     </>
   );
+
+  const renderModalContent = () => (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="text-center barcode-scanner-modal">
+        <div className="bg-[#517226] rounded-full p-2 w-16 h-16 mx-auto mb-10 flex items-center justify-center">
+          <DiscountIcon />
+        </div>
+        <h2 className="text-[20px] font-['Red_Hat_Display'] font-[700] mb-2">
+          Get a 5 CHF.- discount
+        </h2>
+        <p className="text-[16px] font-['Red_Hat_Display'] font-[500] mb-6">
+          Ask your friend to open a QR Code in his account settings. Scan the QR
+          Code and get a discount.
+        </p>
+
+        {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
+
+        <Button onClick={handleScanClick} styles="w-full">
+          {hasPermission ? "Scan QR" : "Allow Camera & Scan"}
+        </Button>
+      </div>
+    </Modal>
+  );
+
+  return <>{isScanning ? renderScannerOverlay() : renderModalContent()}</>;
 };
