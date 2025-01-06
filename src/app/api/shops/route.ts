@@ -30,13 +30,17 @@ const shops = [
   },
 ];
 
-export async function GET() {
+export async function GET(request: Request) {
+  const origin = request.headers.get('origin');
+  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8000', 'http://localhost'];
+  
   return NextResponse.json(shops, {
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": allowedOrigins.includes(origin || '') ? origin! : allowedOrigins[0],
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Credentials": "true",
     },
   });
 }
