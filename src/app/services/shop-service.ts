@@ -13,7 +13,7 @@ class ShopService {
 
   async getShops(): Promise<Shop[]> {
     try {
-      const response = await fetch(getApiUrl('/api/shops'));
+      const response = await fetch(getApiUrl('api/shops'));
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

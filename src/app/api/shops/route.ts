@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 export const revalidate = false;
 
 const shops = [
@@ -34,11 +34,11 @@ export async function GET() {
   return new NextResponse(JSON.stringify(shops), {
     status: 200,
     headers: {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': 'https://b1g1testtask-gmf34ruhp-dmytroborbotko-pets-projects.vercel.app',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Max-Age': '86400',
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Max-Age": "86400",
     },
   });
 }
@@ -47,10 +47,10 @@ export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': 'https://b1g1testtask-gmf34ruhp-dmytroborbotko-pets-projects.vercel.app',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Max-Age': '86400',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Max-Age": "86400",
     },
   });
 }

@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://b1g1testtask.vercel.app/:path*",
+      },
+    ];
+  },
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;
