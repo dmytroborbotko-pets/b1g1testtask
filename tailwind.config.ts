@@ -12,6 +12,14 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        sans: ["var(--font-red-hat-display)"],
+      },
+      fontWeight: {
+        light: "500",
+        normal: "600",
+        bold: "700",
+      },
     },
   },
   plugins: [],
