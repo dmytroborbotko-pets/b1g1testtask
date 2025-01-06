@@ -32,25 +32,11 @@ const shops = [
 
 export async function GET() {
   return new NextResponse(JSON.stringify(shops), {
-    status: 200,
     headers: {
-      "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Max-Age": "86400",
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*'
     },
   });
-}
-
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Max-Age": "86400",
-    },
-  });
-}
+} 

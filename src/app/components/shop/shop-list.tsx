@@ -1,11 +1,10 @@
 "use client";
 
-import Button from "@/app/components/button/Button";
 import ShopCard from "@/app/components/shop-card/shop-card";
 import { useShops } from "@/app/hooks/use-shops";
-import { useState } from "react";
-import Modal from "../modal/modal";
 import { useAppSelector } from "@/app/store/hooks";
+import { useState } from "react";
+import SuccessModal from "../modal/success-modal";
 
 interface ShopListProps {
   searchQuery: string;
@@ -13,7 +12,7 @@ interface ShopListProps {
 
 export default function ShopList({ searchQuery }: Readonly<ShopListProps>) {
   const { shops, loading, error } = useShops();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const isQRBannerVisible = useAppSelector((state) => state.qrBanner.isVisible);
 
   const filteredShops = shops.filter((shop) =>
@@ -38,22 +37,12 @@ export default function ShopList({ searchQuery }: Readonly<ShopListProps>) {
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="text-center">
-          <h2 className="text-xl font-bold mb-4">Subscription Confirmation</h2>
-          <p className="mb-6">
-            Are you sure you want to purchase this subscription?
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => setIsModalOpen(false)}>
-              Confirm Purchase
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      {!isQRBannerVisible && (
+        <SuccessModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </>
   );
 }

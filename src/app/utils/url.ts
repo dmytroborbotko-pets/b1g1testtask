@@ -1,4 +1,4 @@
 export function getApiUrl(path: string): string {
-  const baseUrl = 'https://b1g1testtask.vercel.app/';
-  return `${baseUrl}${path}`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  return `${baseUrl}/${path}`;
 }

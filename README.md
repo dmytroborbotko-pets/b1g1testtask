@@ -1,36 +1,226 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mobile Shop App
 
-## Getting Started
+This is a Next.js mobile application built with Capacitor for native mobile functionality.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Before getting started, make sure you have the following installed:
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Android Studio (for Android development)
+- Xcode (for iOS development, Mac only)
+- Java Development Kit (JDK)
+
+## Local Development Setup
+
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd testb1g1
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a `.env` file in the root directory with:
+   ```env
+   NEXT_PUBLIC_API_URL=https://b1g1testtask.vercel.app
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:3000`
+
+## Building for Mobile
+
+### Android Setup
+
+1. Build the web app:
+   ```bash
+   npm run build
+   ```
+
+2. Initialize Capacitor:
+   ```bash
+   npx cap sync
+   ```
+
+3. Open in Android Studio:
+   ```bash
+   npx cap open android
+   ```
+
+4. Run the app:
+   - Connect your Android device or start an emulator
+   - Click the "Run" button in Android Studio
+
+### iOS Setup (Mac only)
+
+1. Build the web app:
+   ```bash
+   npm run build
+   ```
+
+2. Initialize Capacitor:
+   ```bash
+   npx cap sync
+   ```
+
+3. Open in Xcode:
+   ```bash
+   npx cap open ios
+   ```
+
+4. Run the app:
+   - Connect your iOS device or select a simulator
+   - Click the "Run" button in Xcode
+
+## API Documentation
+
+The app uses a REST API with the following endpoints:
+
+### Get Shops
+
+```http
+GET /api/shops
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Returns a list of available shops.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Response example:
+```json
+[
+  {
+    "id": 1,
+    "name": "Baden",
+    "price": 29,
+    "discountedPrice": 24,
+    "vouchers": 120,
+    "savings": 1034
+  }
+]
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
+- QR Code scanning using Capacitor MLKit
+- Shop listing and details
+- Discount voucher system
+- Mobile-first responsive design
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/
+│   ├── api/          # API routes
+│   ├── components/   # React components
+│   ├── services/     # API services
+│   ├── store/        # State management
+│   ├── types/        # TypeScript types
+│   └── utils/        # Utility functions
+├── public/           # Static assets
+└── styles/          # Global styles
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development Commands
 
-## Deploy on Vercel
+```bash
+# Start development server
+npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Build for production
+npm run build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Start production server
+npm start
+
+# Sync Capacitor
+npx cap sync
+
+# Open Android project
+npx cap open android
+
+# Open iOS project
+npx cap open ios
+```
+
+## Troubleshooting
+
+### QR Scanner Issues
+- Ensure camera permissions are granted
+- Check if the device supports MLKit barcode scanning
+- Clear app cache if scanner shows white screen
+
+### Build Issues
+- Make sure all dependencies are installed
+- Check Node.js version compatibility
+- Verify Android Studio/Xcode setup
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
