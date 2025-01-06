@@ -9,7 +9,6 @@ Before getting started, make sure you have the following installed:
 - Node.js (v18 or higher)
 - npm or yarn
 - Android Studio (for Android development)
-- Xcode (for iOS development, Mac only)
 - Java Development Kit (JDK)
 
 ## Local Development Setup
@@ -59,27 +58,6 @@ Before getting started, make sure you have the following installed:
 4. Run the app:
    - Connect your Android device or start an emulator
    - Click the "Run" button in Android Studio
-
-### iOS Setup (Mac only)
-
-1. Build the web app:
-   ```bash
-   npm run build
-   ```
-
-2. Initialize Capacitor:
-   ```bash
-   npx cap sync
-   ```
-
-3. Open in Xcode:
-   ```bash
-   npx cap open ios
-   ```
-
-4. Run the app:
-   - Connect your iOS device or select a simulator
-   - Click the "Run" button in Xcode
 
 ## API Documentation
 
@@ -146,9 +124,6 @@ npx cap sync
 
 # Open Android project
 npx cap open android
-
-# Open iOS project
-npx cap open ios
 ```
 
 ## Troubleshooting
